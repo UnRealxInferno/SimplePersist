@@ -7,6 +7,11 @@ private _pName = name _player;
 if (_pname == "__SERVER__") exitwith {};
 private _namespaceName = [_pid, _player] call spp_fnc_getplayernamespace;
 
+// Skip saving if player is dead - prevents spawning dead on reconnect
+if (!(isNull _player) && {!(alive _player)}) exitwith {
+	[2, format["Player %1 is dead, skipping save to prevent dead respawn", _pName], _filename] call spp_fnc_log;
+};
+
 // [ [123,[loadout],[pos]], [124,[loadout],[pos]] ]
 private _SPlayer = [];
 if !(isNull _player) then {	
